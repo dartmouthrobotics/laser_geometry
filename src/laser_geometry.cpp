@@ -102,7 +102,7 @@ namespace laser_geometry
     }
 
     if (range_cutoff < 0)
-      range_cutoff = scan_in.range_max;
+      range_cutoff = scan_in.range_max + 0.1; // AQL Mod to include range_max
 
     unsigned int count = 0;
     for (unsigned int index = 0; index< scan_in.ranges.size(); index++)
@@ -412,7 +412,7 @@ const boost::numeric::ublas::matrix<double>& LaserProjection::getUnitVectors_(do
     cloud_out.is_dense = false;
 
     if (range_cutoff < 0)
-      range_cutoff = scan_in.range_max;
+      range_cutoff = scan_in.range_max+0.1; // AQL Modified to include range max
 
     unsigned int count = 0;
     for (size_t i = 0; i < n_pts; ++i)
@@ -455,6 +455,8 @@ const boost::numeric::ublas::matrix<double>& LaserProjection::getUnitVectors_(do
         //make sure to increment count
         ++count;
       }
+      else
+          ROS_WARN_STREAM("CURRENT RANGE " << range << std::endl);
 
       /* TODO: Why was this done in this way, I don't get this at all, you end up with a ton of points with NaN values
        * why can't you just leave them out?
